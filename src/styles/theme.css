@@ -1,0 +1,29 @@
+:root {
+  /* Brand Colors */
+  --color-ocean-lightest: #f0fdfa;
+  --color-ocean-lighter: #ccfbf1;
+  --color-ocean-light: #99f6e4;
+  --color-ocean: #5eead4;
+  --color-ocean-medium: #2dd4bf;
+  --color-ocean-deep: #14b8a6;
+  --color-ocean-deeper: #0d9488;
+  --color-ocean-dark: #0f766e;
+  --color-ocean-darker: #115e59;
+  --color-ocean-darkest: #134e4a;
+
+  /* Semantic Colors */
+  --color-background: var(--color-ocean-darkest);
+  --color-background-alt: var(--color-ocean-darker);
+  --color-overlay: rgba(255, 255, 255, 0.1);
+  
+  /* Text Colors */
+  --color-text: #ffffff;
+  --color-text-secondary: var(--color-ocean-lighter);
+  --color-text-accent: var(--color-ocean);
+  
+  /* Interactive Colors */
+  --color-button: var(--color-ocean-deep);
+  --color-button-hover: var(--color-ocean-medium);
+  --color-link: var(--color-ocean);
+  --color-link-hover: var(--color-text);
+}
