@@ -1,11 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
+import { ENV_CONFIG } from '../config/env';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = ENV_CONFIG.SUPABASE.URL;
+const supabaseAnonKey = ENV_CONFIG.SUPABASE.ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+  console.warn('Missing Supabase environment variables - running in static mode');
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient<Database>(
+  supabaseUrl || 'https://dummy.supabase.co',
+  supabaseAnonKey || 'dummy-key'
+);
