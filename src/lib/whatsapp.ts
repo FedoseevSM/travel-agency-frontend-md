@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { ENV_CONFIG } from '../config/env';
 
-const WA_API_TOKEN = import.meta.env.VITE_WA_API_TOKEN;
-const WA_PHONE_NUMBER = import.meta.env.VITE_WA_PHONE_NUMBER;
+const WA_API_TOKEN = ENV_CONFIG.WHATSAPP.API_TOKEN;
+const WA_PHONE_NUMBER = ENV_CONFIG.WHATSAPP.PHONE_NUMBER;
 
 function formatPhoneNumber(phone) {
   return String(phone).replace(/\D/g, '');

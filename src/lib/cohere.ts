@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { ENV_CONFIG } from '../config/env';
 
-const COHERE_API_KEY = import.meta.env.VITE_COHERE_API_KEY;
-const COHERE_API_URL = 'https://api.cohere.ai/v1/generate';
+const COHERE_API_KEY = ENV_CONFIG.COHERE.API_KEY;
+const COHERE_API_URL = ENV_CONFIG.COHERE.API_URL;
 
 export async function translateText(text: string, targetLanguage: 'en' | 'ru'): Promise<string> {
   try {

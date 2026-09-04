@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { ENV_CONFIG } from '../config/env';
 
-const TG_ENDPOINT = import.meta.env.VITE_TG_ENDPOINT;
+const TG_ENDPOINT = ENV_CONFIG.TELEGRAM.ENDPOINT;
 
 interface NotificationData {
   name: string;
