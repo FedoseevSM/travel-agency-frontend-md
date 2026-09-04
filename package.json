@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.8",
     "dotenv": "^16.4.7",
+    "front-matter": "^4.0.2",
     "i18next": "^23.10.1",
     "i18next-browser-languagedetector": "^7.2.0",
     "lucide-react": "^0.344.0",

@@ -1,62 +1,46 @@
-import { supabase } from './supabase';
 import type { Service } from '@/types/service';
 import { getRandomGalleryImages } from '@/data/gallery';
+import frontMatter from 'front-matter';
+
+// Load all markdown files as strings
+const markdownFiles = import.meta.glob('@/content/tours/*.md', { query: '?raw', import: 'default', eager: true });
+
+function getAllServices(): Service[] {
+  const services: Service[] = [];
+  
+  for (const path in markdownFiles) {
+    const rawContent = markdownFiles[path] as string;
+    const { attributes, body } = frontMatter<any>(rawContent);
+    services.push(formatService({ ...attributes, program: body }));
+  }
+  
+  return services;
+}
 
 export async function getServices(searchQuery?: string): Promise<Service[]> {
-  let query = supabase
-    .from('services')
-    .select('*')
-    .eq('active', true);
+  let services = getAllServices();
 
   if (searchQuery) {
-    query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,titleEn.ilike.%${searchQuery}%`);
+    const lowerQuery = searchQuery.toLowerCase();
+    services = services.filter(s => 
+      s.title.toLowerCase().includes(lowerQuery) ||
+      (s.titleEn && s.titleEn.toLowerCase().includes(lowerQuery)) ||
+      (s.description && s.description.toLowerCase().includes(lowerQuery))
+    );
   }
 
-  const { data, error } = await query;
-
-  if (error) {
-    console.error('Error fetching services:', error);
-    throw error;
-  }
-
-  if (!data || data.length === 0) {
-    return [];
-  }
-
-  return data.map(formatService);
+  return services;
 }
 
 export async function getServiceById(id: string): Promise<Service | null> {
-  const { data, error } = await supabase
-    .from('services')
-    .select('*, testimonials, related_services')
-    .eq('id', id)
-    .eq('active', true)
-    .single();
-
-  if (error) {
-    console.error('Error fetching service:', error);
-    throw error;
-  }
-
-  return data ? formatService(data) : null;
+  const services = getAllServices();
+  return services.find(s => s.id === id) || null;
 }
 
 export async function getRelatedServices(ids: string[]): Promise<Service[]> {
   if (!ids.length) return [];
-
-  const { data, error } = await supabase
-    .from('services')
-    .select('*')
-    .in('id', ids)
-    .eq('active', true);
-
-  if (error) {
-    console.error('Error fetching related services:', error);
-    throw error;
-  }
-
-  return data ? data.map(formatService) : [];
+  const services = getAllServices();
+  return services.filter(s => ids.includes(s.id));
 }
 
 function formatService(raw: any): Service {
@@ -66,28 +50,28 @@ function formatService(raw: any): Service {
     titleEn: raw.titleEn,
     description: raw.description,
     imageUrl: raw.imageUrl,
-    gallery: raw.gallery || getRandomGalleryImages(4), // Use random gallery images if none provided
-    categories: raw.categories,
+    gallery: raw.gallery || getRandomGalleryImages(4),
+    categories: raw.categories || [],
     location: raw.location,
     city: raw.city,
     duration: {
-      days: raw['duration.days'],
-      nights: raw['duration.nights']
+      days: raw.duration?.days || 0,
+      nights: raw.duration?.nights || 0
     },
     price: {
-      adult: raw['price.adult'],
-      child: raw['price.child'],
-      amount: raw['price.amount'],
-      currency: raw['price.currency']
+      adult: raw.price?.adult || 0,
+      child: raw.price?.child || 0,
+      amount: raw.price?.amount || 0,
+      currency: raw.price?.currency || 'THB'
     },
     program: raw.program || '',
     pricingOptions: raw.pricingOptions || [{
       id: 'standard',
       name: 'Стандартный',
       price: {
-        adult: raw['price.adult'],
-        child: raw['price.child'],
-        currency: raw['price.currency']
+        adult: raw.price?.adult || 0,
+        child: raw.price?.child || 0,
+        currency: raw.price?.currency || 'THB'
       }
     }],
     included: raw.included || [],
@@ -95,6 +79,6 @@ function formatService(raw: any): Service {
     requirements: raw.requirements || [],
     itinerary: raw.itinerary || [],
     testimonials: raw.testimonials || [],
-    relatedServices: raw.related_services || []
+    relatedServices: raw.relatedServices || []
   };
 }
