@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Header } from './components/layout/Header/Header';
 import { Footer } from './components/layout/Footer/Footer';
 import { ChatBot } from './components/chat/ChatBot';
