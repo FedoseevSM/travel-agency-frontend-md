@@ -28,121 +28,39 @@ const categories = [
   }
 ];
 
-const products = {
-  leather: [
-    {
-      id: 'snake-bag',
-      name: 'Кожа Змеи',
-      description: 'Во время этой эксклюзивной шопинг экскурсии вы сможете посетить бутик, предлагающий сумки ручной работы из натуральной кожи питона',
-      features: ['Ручная работа', 'Сертификат подлинности', 'Уникальный дизайн', 'Натуральная кожа питона'],
-      priceRange: '15000-30000',
-      gallery: [
-        'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1594422297652-5fd45a5f3b7d?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80'
-      ]
-    },
-    {
-      id: 'croc-wallet',
-      name: 'Кожа Крокодила',
-      description: 'Присоединяйтесь к нашей шопинг экскурсии и посетите бутик, где можно приобрести роскошные кошельки из натуральной кожи крокодила',
-      features: ['Кожа крокодила', 'Ручная работа', 'Несколько отделений', 'Подарочная упаковка'],
-      priceRange: '8000-15000',
-      gallery: [
-        'https://images.unsplash.com/photo-1594422297652-5fd45a5f3b7d?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80'
-      ]
-    }
-  ],
-  jewelry: [
-    {
-      id: 'sapphire-ring',
-      name: 'Кольцо с сапфиром',
-      description: 'Элегантное кольцо из белого золота с натуральным тайским сапфиром',
-      features: ['Белое золото 585', 'Натуральный сапфир', 'Сертификат подлинности', 'Ручная работа'],
-      priceRange: '20000-40000',
-      gallery: [
-        'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1586878341523-7503d575f8cf?auto=format&fit=crop&q=80'
-      ]
-    },
-    {
-      id: 'pearl-necklace',
-      name: 'Ожерелье из жемчуга',
-      description: 'Роскошное ожерелье из натурального жемчуга южных морей',
-      features: ['Натуральный жемчуг', 'Застежка из белого золота', 'Регулируемая длина', 'Подарочный футляр'],
-      priceRange: '30000-60000',
-      gallery: [
-        'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1586878341523-7503d575f8cf?auto=format&fit=crop&q=80'
-      ]
-    }
-  ],
-  latex: [
-    {
-      id: 'latex-pillow',
-      name: 'Ортопедическая подушка',
-      description: 'Анатомическая подушка из натурального латекса с эффектом памяти',
-      features: ['100% натуральный латекс', 'Ортопедический эффект', 'Антиаллергенная', 'Съемный чехол'],
-      priceRange: '2000-4000',
-      gallery: [
-        'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80'
-      ]
-    },
-    {
-      id: 'latex-mattress',
-      name: 'Латексный матрас',
-      description: 'Ортопедический матрас из натурального латекса высшего качества',
-      features: ['100% натуральный латекс', 'Разные уровни жесткости', 'Антибактериальное покрытие', 'Гарантия 10 лет'],
-      priceRange: '10000-20000',
-      gallery: [
-        'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80'
-      ]
-    }
-  ],
-  medicine: [
-    {
-      id: 'traditional-medicine',
-      name: 'Традиционная медицина',
-      description: 'Традиционные тайские лекарства и настойки, основанные на рецептах народной медицины',
-      features: ['Натуральные ингредиенты', 'Древние рецепты', 'Для здоровья и укрепления иммунитета'],
-      priceRange: '500-3000',
-      gallery: [
-        'https://images.unsplash.com/photo-1565575016599-f1c65ff7fdf4?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1565575001942-20b78d9e2ef4?auto=format&fit=crop&q=80'
-      ]
-    },
-    {
-      id: 'pharmacies',
-      name: 'Аптеки',
-      description: 'Современные аптеки с широким ассортиментом медицинских товаров и консультациями фармацевтов',
-      features: ['Широкий ассортимент лекарств', 'Консультации специалистов', 'Удобное расположение'],
-      priceRange: '100-2000',
-      gallery: [
-        'https://images.unsplash.com/photo-1591017577630-cdc07b1e9095?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1591017577820-3d3ed3cf7b37?auto=format&fit=crop&q=80'
-      ]
-    },
-    {
-      id: 'crocodile-farms',
-      name: 'Крокодиловые фермы',
-      description: 'Посещение ферм, где выращивают крокодилов, с возможностью приобретения кожи и сувениров',
-      features: ['Посещение фермы', 'Изделия из кожи крокодила', 'Уникальные сувениры'],
-      priceRange: '2000-10000',
-      gallery: [
-        'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1506748686201-5fd32cb04bfa?auto=format&fit=crop&q=80'
-      ]
-    }
-  ]
-};
+import frontMatter from 'front-matter';
+
+const shoppingFiles = import.meta.glob('@/content/shopping/*.md', { query: '?raw', import: 'default', eager: true });
+
+function getLocalShoppingProducts() {
+  const items = {
+    leather: [],
+    jewelry: [],
+    latex: [],
+    medicine: []
+  } as any;
+
+  // For demo purposes, put the mock files into 'leather' and 'jewelry' categories
+  let counter = 0;
+  for (const path in shoppingFiles) {
+    const rawContent = shoppingFiles[path] as string;
+    const { attributes } = frontMatter<any>(rawContent);
+    const cat = counter % 2 === 0 ? 'leather' : 'jewelry';
+    
+    items[cat].push({
+      id: attributes.id,
+      name: attributes.title,
+      description: attributes.description || '',
+      features: attributes.features || [],
+      priceRange: attributes.pricing ? `${attributes.pricing.base}-${attributes.pricing.base * 2}` : '1000-5000',
+      gallery: [attributes.imageUrl || 'https://images.unsplash.com/photo-1519567281028-251f22fa2ff0?auto=format&fit=crop&q=80']
+    });
+    counter++;
+  }
+  return items;
+}
+
+const products = getLocalShoppingProducts();
 
 const benefits = [
   {

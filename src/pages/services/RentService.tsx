@@ -25,6 +25,20 @@ interface CarData {
   gallery: string[];
 }
 
+import frontMatter from 'front-matter';
+
+const carFiles = import.meta.glob('@/content/cars/*.md', { query: '?raw', import: 'default', eager: true });
+
+function getLocalCars(): CarData[] {
+  const cars: CarData[] = [];
+  for (const path in carFiles) {
+    const rawContent = carFiles[path] as string;
+    const { attributes } = frontMatter<any>(rawContent);
+    cars.push(attributes);
+  }
+  return cars;
+}
+
 const RentService = () => {
   const [categories, setCategories] = useState<CarCategory[]>([]);
   const [cars, setCars] = useState<Record<string, CarData[]>>({});
@@ -44,20 +58,24 @@ const RentService = () => {
     }
   }, [selectedCategory]);
 
-  const loadCategories = async () => {
+  const loadCategories = () => {
     try {
-      const { data, error } = await supabase
-        .from('car_categories')
-        .select('*')
-        .order('id');
-
-      if (error) throw error;
-
-      if (data) {
-        setCategories(data);
-        if (data.length > 0) {
-          setSelectedCategory(data[0]);
+      const allCars = getLocalCars();
+      const catMap = new Map<string, CarCategory>();
+      allCars.forEach(car => {
+        if (!catMap.has(car.category_id)) {
+          catMap.set(car.category_id, {
+            id: car.category_id,
+            name: car.category_id === 'sedan' ? 'Седаны' : car.category_id === 'suv' ? 'Внедорожники' : 'Другое',
+            description: car.category_id === 'sedan' ? 'Комфортные авто для города' : 'Вместительные авто для семьи',
+          });
         }
+      });
+      
+      const data = Array.from(catMap.values());
+      setCategories(data);
+      if (data.length > 0) {
+        setSelectedCategory(data[0]);
       }
     } catch (err) {
       console.error('Error loading categories:', err);
@@ -65,29 +83,20 @@ const RentService = () => {
     }
   };
 
-  const loadCarsForCategory = async (categoryId: string) => {
-    if (cars[categoryId]) return; // Already loaded
-
+  const loadCarsForCategory = (categoryId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('cars')
-        .select('*')
-        .eq('category_id', categoryId)
-        .eq('active', true);
-
-      if (error) throw error;
-
-      if (data) {
-        setCars(prev => ({
-          ...prev,
-          [categoryId]: data
-        }));
-        // Initialize image indices for new cars
-        setCurrentImages(prev => ({
-          ...prev,
-          ...data.reduce((acc, car) => ({ ...acc, [car.id]: 0 }), {})
-        }));
-      }
+      const allCars = getLocalCars();
+      const data = allCars.filter(car => car.category_id === categoryId);
+      
+      setCars(prev => ({
+        ...prev,
+        [categoryId]: data
+      }));
+      // Initialize image indices for new cars
+      setCurrentImages(prev => ({
+        ...prev,
+        ...data.reduce((acc, car) => ({ ...acc, [car.id]: 0 }), {})
+      }));
     } catch (err) {
       console.error('Error loading cars:', err);
       setError('Не удалось загрузить данные об автомобилях');

@@ -5,54 +5,34 @@ import { ChevronLeft, ChevronRight, Wifi, School as Pool, Twitch as Kitchen, Car
 import { supabase } from '@/lib/supabase';
 import axios from 'axios';
 
-const villas = [
-  {
-    id: 'luxury-pool-villa',
-    name: 'Luxury Pool Villa',
-    location: 'Раваи, Пхукет',
-    features: ['Бассейн', 'Wi-Fi', 'Кухня', 'Парковка', '4 спальни'],
-    pricing: {
-      day: 15000,
-      week: 12000,
-      month: 10000
-    },
-    specs: {
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 350,
-      pool: true
-    },
-    gallery: [
-      'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?auto=format&fit=crop&q=80'
-    ]
-  },
-  {
-    id: 'beachfront-villa',
-    name: 'Beachfront Villa',
-    location: 'Камала, Пхукет',
-    features: ['Прямой выход к пляжу', 'Бассейн', 'Wi-Fi', 'Кухня', '3 спальни'],
-    pricing: {
-      day: 20000,
-      week: 17000,
-      month: 15000
-    },
-    specs: {
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 280,
-      pool: true
-    },
-    gallery: [
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?auto=format&fit=crop&q=80'
-    ]
+import frontMatter from 'front-matter';
+
+const villaFiles = import.meta.glob('@/content/villas/*.md', { query: '?raw', import: 'default', eager: true });
+
+function getLocalVillas() {
+  const items = [];
+  for (const path in villaFiles) {
+    const rawContent = villaFiles[path] as string;
+    const { attributes } = frontMatter<any>(rawContent);
+    items.push({
+      id: attributes.id,
+      name: attributes.title,
+      location: attributes.location?.name || '',
+      features: attributes.features || [],
+      pricing: attributes.pricing || { day: 0, week: 0, month: 0 },
+      specs: {
+        bedrooms: attributes.bedrooms || 0,
+        bathrooms: attributes.bathrooms || 0,
+        area: 250,
+        pool: true
+      },
+      gallery: attributes.gallery || []
+    });
   }
-];
+  return items;
+}
+
+const villas = getLocalVillas();
 
 const paymentServices = [
   {
